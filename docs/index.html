@@ -17,6 +17,7 @@
   --moss:#2F5D46; --moss-h:#244A38; --tint:#E3ECE4;
   --kraft:#C89B62; --fold:#9E7442; --floor:#E9D7BC;
   --marigold:#E0A43A;
+  --bar-h:calc(72px + env(safe-area-inset-bottom, 0px));
   --serif:"Young Serif", Georgia, "Times New Roman", serif;
   --sans:"Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
@@ -42,11 +43,12 @@ header.top{display:flex;align-items:center;justify-content:space-between;gap:12p
 .intro h2{font-family:var(--serif);font-weight:400;font-size:28px;line-height:1.15;margin:12px 0 4px}
 .intro p{margin:0 0 8px;color:var(--ink2)}
 
-/* Tabs */
+/* Tabs: underline matches the label width, with no padding on the underline */
 .tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line);margin:8px -16px 0;padding:0 16px;-webkit-overflow-scrolling:touch}
 .tabs::-webkit-scrollbar{display:none}
-.tab{flex:none;min-height:48px;padding:0 14px;background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;font:inherit;font-size:15px;color:var(--ink2);cursor:pointer;white-space:nowrap}
-.tab[aria-selected="true"]{color:var(--ink);font-weight:700;border-bottom-color:var(--moss)}
+.tab{flex:none;min-height:48px;padding:0 14px;background:none;border:0;position:relative;margin-bottom:-1px;font:inherit;font-size:15px;color:var(--ink2);cursor:pointer;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--ink);font-weight:700}
+.tab[aria-selected="true"]::after{content:"";position:absolute;left:14px;right:14px;bottom:-1px;height:2px;background:var(--moss)}
 .tab:hover{color:var(--ink)}
 
 /* Layout */
@@ -55,14 +57,14 @@ header.top{display:flex;align-items:center;justify-content:space-between;gap:12p
 .listcol{}
 
 /* Box */
-.box-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 10px 14px}
-.box-title{font-family:var(--serif);font-weight:400;font-size:20px;margin:2px 4px 6px}
-.box-svg{display:block;width:100%;height:auto;max-height:300px}
+.box-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.box-title{font-family:var(--serif);font-weight:400;font-size:20px;margin:0 0 8px}
+.box-svg{display:block;width:100%;height:auto;max-height:260px}
 .slot{cursor:pointer}
 .slot .cell{fill:transparent;stroke:var(--fold);stroke-width:1.5;stroke-dasharray:4 4}
-.slot .lbl{font-family:var(--sans);font-size:14px;font-variant:small-caps;letter-spacing:.04em;fill:#6b4f2c;text-anchor:middle;dominant-baseline:middle}
+.slot .lbl{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;fill:#6b4f2c;text-anchor:middle;dominant-baseline:middle}
 .slot.filled .cell{fill:var(--tint);stroke:var(--moss);stroke-dasharray:none;stroke-width:2}
-.slot.filled .lbl{fill:var(--moss);font-size:13px}
+.slot.filled .lbl{fill:var(--moss)}
 .slot .ico{fill:none;stroke:var(--moss);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .slot .tick circle{fill:var(--moss)}
 .slot .tick path{fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -75,38 +77,44 @@ header.top{display:flex;align-items:center;justify-content:space-between;gap:12p
 @keyframes flash{0%,35%{fill:var(--marigold)}100%{fill:var(--moss)}}
 
 /* Progress */
-.progress{margin:14px 4px 0}
+.progress{margin:14px 0 0}
 .progress-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
 .progress-text{font-weight:700;font-variant-numeric:tabular-nums;margin:0}
 .reset{background:none;border:0;font:inherit;font-size:14px;color:var(--ink2);text-decoration:underline;text-underline-offset:3px;cursor:pointer;min-height:44px;padding:0 2px}
-.segs{display:flex;gap:3px;margin-top:4px}
+.reset[hidden]{display:none}
+.progress-note{margin:6px 0 0;font-size:13px;color:var(--muted);line-height:1.35}
+.reset-confirm{display:flex;align-items:center;flex-wrap:wrap;gap:0 2px;margin:4px 0 0;font-size:14px;color:var(--ink)}
+.reset-confirm[hidden]{display:none}
+.reset-confirm button{background:none;border:0;font:inherit;font-weight:700;color:var(--moss);text-decoration:underline;text-underline-offset:3px;cursor:pointer;min-height:44px;min-width:44px;padding:0 8px}
+.segs{display:flex;gap:3px;margin-top:8px}
 .segs span{flex:1;height:10px;border-radius:3px;background:var(--tint)}
 .segs span.on{background:var(--moss)}
 
-/* List */
-.list-head{display:flex;justify-content:space-between;align-items:baseline;margin:26px 0 8px}
+/* List card: heading lives inside so desktop column tops line up */
+.list-card{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-top:20px;overflow:hidden}
+.list-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:0;padding:14px 16px 12px}
 .list-head h2{font-family:var(--serif);font-weight:400;font-size:24px;margin:0}
 .list-head small{font-size:13px;color:var(--muted)}
-.items{list-style:none;margin:0;padding:0;background:var(--card);border:1px solid var(--line);border-radius:14px}
-.item{display:flex;align-items:flex-start;gap:12px;padding:14px;border-top:1px solid var(--line);scroll-margin-top:120px;transition:background-color .6s}
-.item:first-child{border-top:0}
+.items{list-style:none;margin:0;padding:0}
+.item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-top:1px solid var(--line);scroll-margin-top:120px;transition:background-color .6s}
 .item.hl{background:#FBF4E6}
-.item .ic{flex:none;width:36px;height:36px;border-radius:10px;border:1.5px solid var(--line);display:grid;place-items:center;margin-top:2px}
+.item .ic{flex:none;width:36px;height:36px;border-radius:10px;border:1.5px solid var(--line);display:grid;place-items:center}
 .item .ic svg{width:22px;height:22px;fill:none;stroke:var(--ink2);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .item.added .ic{background:var(--tint);border-color:var(--tint)}
 .item.added .ic svg{stroke:var(--moss)}
 .item .txt{flex:1;min-width:0}
 .item .nm{font-weight:700;font-size:16px;margin:0}
 .item .why{margin:2px 0 0;color:var(--ink2);font-size:15px}
-.item .act{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:4px;min-width:96px}
-.add{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:88px;padding:0 18px;border:2px solid var(--moss);border-radius:10px;color:var(--moss);background:var(--card);font-weight:700;font-size:15px;text-decoration:none}
+.shop-note{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.item.added .shop-note{display:none}
+.item .act{flex:none;display:flex;align-items:center;justify-content:flex-end}
+.add{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;border:2px solid var(--moss);border-radius:10px;color:var(--moss);background:var(--card);font-weight:700;font-size:15px;text-decoration:none;white-space:nowrap}
 .add:hover{background:var(--tint);color:var(--moss-h);border-color:var(--moss-h)}
-.note{font-size:13px;color:var(--muted);text-align:right;line-height:1.3}
-.inbox{display:none;font-weight:700;color:var(--moss);min-height:44px;align-items:center;font-size:15px}
-.change{display:none;background:none;border:0;padding:4px 0;font:inherit;font-size:13px;color:var(--ink2);text-decoration:underline;text-underline-offset:3px;cursor:pointer;min-height:32px}
-.item.added .add,.item.added .note{display:none}
-.item.added .inbox{display:inline-flex}
-.item.added .change{display:inline-block}
+.status{display:none;align-items:center;white-space:nowrap;flex-shrink:0;gap:0;font-weight:700;color:var(--moss);font-size:15px;min-height:44px}
+.status .sep{white-space:pre}
+.item.added .add{display:none}
+.item.added .status{display:inline-flex}
+.change{background:none;border:0;padding:0;margin:0;font:inherit;font-size:15px;font-weight:400;color:var(--ink2);text-decoration:underline;text-underline-offset:3px;cursor:pointer;min-height:44px}
 
 /* Good to know */
 .gtk{margin:30px 0 8px}
@@ -120,11 +128,11 @@ header.top{display:flex;align-items:center;justify-content:space-between;gap:12p
 .gtk .meta{margin:2px 0 0;font-size:13px;color:var(--muted)}
 .gtk .ph{margin:4px 0 0;font-size:14px;color:var(--ink2)}
 
-footer{margin:28px 0 0;padding:20px 0 120px;border-top:1px solid var(--line);font-size:14px;color:var(--ink2)}
+footer{margin:28px 0 0;padding:20px 0 24px;border-top:1px solid var(--line);font-size:14px;color:var(--ink2)}
 footer p{margin:0 0 6px}
 
 /* Sticky buy bar */
-.buybar{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(246,241,231,.97);border-top:1px solid var(--line)}
+.buybar{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:10px 16px calc(10px + env(safe-area-inset-bottom, 0px));background:var(--page);border-top:1px solid #DDD5C6}
 .buy{display:flex;align-items:center;justify-content:center;width:100%;min-height:52px;border:0;border-radius:12px;background:var(--moss);color:#fff;font:inherit;font-weight:700;font-size:16px;cursor:pointer;font-variant-numeric:tabular-nums}
 .buy:hover{background:var(--moss-h)}
 .buy-desk{display:none;margin-top:14px}
@@ -145,13 +153,34 @@ dialog::backdrop{background:rgba(34,38,42,.45)}
 
 #print-sheet{display:none}
 
+@media (max-width:1023px){
+  html{scroll-padding-bottom:calc(var(--bar-h) + 16px)}
+  main.layout{padding-bottom:calc(var(--bar-h) + 16px);padding-top:8px}
+  header.top{padding:8px 0 4px}
+  .intro h2{margin:8px 0 4px}
+  .tabs{margin-top:4px}
+  .box-title{margin-bottom:4px}
+  .progress{margin-top:8px}
+  .list-card{margin-top:8px}
+  .list-head{flex-direction:column;align-items:flex-start;gap:2px;padding:8px 16px 6px}
+  .segs{margin-top:4px}
+  .status{flex-direction:column;align-items:flex-end;justify-content:center;white-space:normal;line-height:1.25;min-height:0;gap:0}
+  .status .sep{display:none}
+  .change{min-height:32px;line-height:1.2}
+}
+@media (max-width:479px){
+  .intro p{display:none}
+  .box-svg{max-height:200px}
+}
+
 @media (min-width:1024px){
   .wrap{padding:0 32px}
   .tabs{margin:8px 0 0;padding:0}
   .intro h2{font-size:40px}
   .layout{display:grid;grid-template-columns:5fr 7fr;gap:40px;align-items:start;padding-top:24px}
   .boxcol{position:sticky;top:48px}
-  .list-head{margin-top:0}
+  .list-card{margin-top:0}
+  .box-svg{max-height:none}
   .buybar{display:none}
   .buy-desk{display:flex}
   footer{padding-bottom:40px}
@@ -182,7 +211,7 @@ dialog::backdrop{background:rgba(34,38,42,.45)}
 <div class="wrap">
   <header class="top">
     <p class="wordmark">
-      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 11l11-5 11 5v13l-11 5-11-5z" fill="#C89B62" stroke="#22262A" stroke-width="2" stroke-linejoin="round"/><path d="M5 11l11 5 11-5M16 16v13" fill="none" stroke="#22262A" stroke-width="2" stroke-linejoin="round"/><path d="M11 13.5l-1 4" stroke="#2F5D46" stroke-width="2" stroke-linecap="round"/></svg>
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 11l11-5 11 5v13l-11 5-11-5z" fill="none" stroke="#22262A" stroke-width="2" stroke-linejoin="round"/><path d="M5 11l11 5 11-5M16 16v13" fill="none" stroke="#22262A" stroke-width="2" stroke-linejoin="round"/><path d="M11 13.5l-1 4" stroke="#22262A" stroke-width="2" stroke-linecap="round"/></svg>
       Be Ready Box
     </p>
     <button class="print-link" type="button" id="printBtn">Print checklist</button>
@@ -199,12 +228,19 @@ dialog::backdrop{background:rgba(34,38,42,.45)}
     <div class="boxcol">
       <div class="box-card">
         <h2 class="box-title" id="boxTitle">Home 72-hour box</h2>
-        <svg class="box-svg" id="boxSvg" viewBox="0 0 400 290" role="group" aria-label="Your box, with a slot for each item"></svg>
+        <svg class="box-svg" id="boxSvg" viewBox="0 0 400 264" role="group" aria-label="Your box, with a slot for each item"></svg>
         <div class="progress">
           <div class="progress-row">
-            <p class="progress-text" id="progText" aria-live="polite">Your box is 0/12 ready</p>
+            <p class="progress-text" id="progText" aria-live="polite">0 of 12 selected</p>
             <button type="button" class="reset" id="resetBtn">Start again</button>
           </div>
+          <div class="reset-confirm" id="resetConfirm" hidden>
+            <span id="resetPrompt">Clear all 0?</span>
+            <button type="button" id="resetYes">Yes</button>
+            <span aria-hidden="true">/</span>
+            <button type="button" id="resetNo">No</button>
+          </div>
+          <p class="progress-note">Selecting items builds your checklist; it doesn't buy anything.</p>
           <div class="segs" id="segs" aria-hidden="true"></div>
         </div>
       </div>
@@ -212,11 +248,13 @@ dialog::backdrop{background:rgba(34,38,42,.45)}
     </div>
 
     <div class="listcol">
-      <div class="list-head">
-        <h2 id="listTitle">What goes in</h2>
-        <small>Links are plain shop searches</small>
+      <div class="list-card">
+        <div class="list-head">
+          <h2 id="listTitle">What goes in</h2>
+          <small>Links are plain shop searches</small>
+        </div>
+        <ul class="items" id="items"></ul>
       </div>
-      <ul class="items" id="items"></ul>
 
       <section class="gtk" aria-labelledby="gtkTitle">
         <div class="gtk-head"><h2 id="gtkTitle">Good to know</h2><span class="tagline">Example items</span></div>
@@ -231,17 +269,17 @@ dialog::backdrop{background:rgba(34,38,42,.45)}
 
   <footer>
     <p><strong>Be Ready Box</strong> is a mockup by Hurrell Capital. It is not a live service.</p>
-    <p>“Add” buttons open plain Amazon UK search results in a new tab. They are mockup links with no affiliate tags, and nothing is bought here. Your box is saved only in this browser.</p>
+    <p>“Find at retailer” buttons open plain Amazon UK search results in a new tab. They are mockup links with no affiliate tags, and nothing is bought here. Selecting items builds a checklist saved only in this browser.</p>
   </footer>
 </div>
 
-<div class="buybar"><button type="button" class="buy" id="buyBar">Buy the whole box · 0 of 12 added</button></div>
+<div class="buybar"><button type="button" class="buy" id="buyBar">Buy the whole box · 0 of 12 selected</button></div>
 
 <dialog id="buyModal" aria-labelledby="buyModalTitle">
-  <div class="mhead"><h2 id="buyModalTitle">Buy the whole box</h2><button class="x" type="button" id="closeModal" aria-label="Close">×</button></div>
-  <p class="mnote"><strong>Mockup.</strong> In a live version this would be a single basket. Here, each line opens a plain shop search in a new tab.</p>
+  <div class="mhead"><h2 id="buyModalTitle">Mockup: no checkout yet</h2><button class="x" type="button" id="closeModal" aria-label="Close">×</button></div>
+  <p class="mnote">This is a mockup. There is no bundle checkout and no order is placed. Each line opens a plain retailer search in a new tab.</p>
   <ul class="mlist" id="mlist"></ul>
-  <p class="mfoot">Mockup links · no affiliate tags · nothing is bought on this page.</p>
+  <p class="mfoot">Plain retailer searches · no affiliate tags · nothing is bought on this page.</p>
 </dialog>
 
 <div id="print-sheet" aria-hidden="true"></div>
@@ -294,51 +332,51 @@ var TABS=[
   ["torch","Torch","torch","Lights the stairs if the power goes","led torch","torch"],
   ["radio","Wind-up radio","radio","Keeps you up to date without a charger","wind up radio","radio"],
   ["power","Power bank","power","Keeps your phone going for a day or two","power bank 20000mah","power"],
-  ["aid","First aid kit","first aid","Plasters and basics in one place","first aid kit home","aid"],
-  ["batt","Batteries","batteries","Spares for the torch and radio","aa batteries pack","batt"],
-  ["candle","Candles & matches","candles","A gentle backup light, used with care","emergency candles and matches","candle"],
+  ["aid","First aid kit","aid","Plasters and basics in one place","first aid kit home","aid"],
+  ["batt","Batteries","batts","Spares for the torch and radio","aa batteries pack","batt"],
+  ["candle","Candles & matches","wax","A gentle backup light, used with care","emergency candles and matches","candle"],
   ["cash","Cash","cash","Small notes, in case card machines are down","cash envelope wallet","cash"],
-  ["docs","Documents pouch","papers","Copies of the important papers, kept dry","waterproof document pouch","docs"],
-  ["whistle","Whistle","whistle","Easy to hear, light to carry","safety whistle","whistle"],
-  ["foil","Foil blankets","blankets","Fold small, keep warmth in","foil blankets pack","blanket"]]},
+  ["docs","Documents pouch","docs","Copies of the important papers, kept dry","waterproof document pouch","docs"],
+  ["whistle","Whistle","whist","Easy to hear, light to carry","safety whistle","whistle"],
+  ["foil","Foil blankets","foil","Fold small, keep warmth in","foil blankets pack","blanket"]]},
  {id:"power",tab:"Power cut",title:"Power cut box",items:[
-  ["headtorch","Head torch","headlamp","Hands free for cooking and stairs","head torch rechargeable","headtorch"],
-  ["lantern","LED lantern","lantern","Lights a whole room, not just a spot","led camping lantern","lantern"],
+  ["headtorch","Head torch","head","Hands free for cooking and stairs","head torch rechargeable","headtorch"],
+  ["lantern","LED lantern","lamp","Lights a whole room, not just a spot","led camping lantern","lantern"],
   ["power","Power bank","power","Charge it now, use it when you need it","power bank 20000mah","power"],
-  ["batt","Spare batteries","batteries","AA and AAA to fit what you own","aa aaa batteries pack","batt"],
+  ["batt","Spare batteries","batts","AA and AAA to fit what you own","aa aaa batteries pack","batt"],
   ["radio","Wind-up radio","radio","Local news without mains or wifi","wind up radio","radio"],
   ["flask","Vacuum flask","flask","Hot drinks stay hot for hours","vacuum flask 1 litre","flask"],
-  ["blanket","Warm blankets","blankets","An extra layer for the evening","fleece blanket","blanket"],
+  ["blanket","Warm blankets","warm","An extra layer for the evening","fleece blanket","blanket"],
   ["tealight","LED tea lights","lights","Soft light with no flame","led tea lights battery","tealight"],
-  ["coolbox","Cool box & ice packs","cool box","Keeps the fridge basics cold a bit longer","cool box ice packs","coolbox"],
-  ["food","No-cook snacks","snacks","Things you can eat without a hob","no cook snacks long life","can"],
+  ["coolbox","Cool box & ice packs","cool","Keeps the fridge basics cold a bit longer","cool box ice packs","coolbox"],
+  ["food","No-cook snacks","snack","Things you can eat without a hob","no cook snacks long life","can"],
   ["water","Bottled water","water","In case the pumps pause too","bottled water 5 litre","bottle"],
-  ["list","Paper phone list","numbers","Numbers you'd want if your phone runs flat","address book small","list"]]},
+  ["list","Paper phone list","list","Numbers you'd want if your phone runs flat","address book small","list"]]},
  {id:"car",tab:"Car",title:"Car box",items:[
-  ["scraper","Scraper & de-icer","scraper","Clear windows on frosty mornings","ice scraper de icer","scraper"],
+  ["scraper","Scraper & de-icer","ice","Clear windows on frosty mornings","ice scraper de icer","scraper"],
   ["leads","Jump leads","leads","A quick start if the battery is flat","jump leads","leads"],
   ["vest","Hi-vis vest","hi-vis","Easy to be seen at the roadside","hi vis vest","vest"],
-  ["triangle","Warning triangle","triangle","Lets other drivers know early","warning triangle car","triangle"],
+  ["triangle","Warning triangle","warn","Lets other drivers know early","warning triangle car","triangle"],
   ["torch","Torch","torch","For checking tyres in the dark","led torch","torch"],
-  ["plug","Car phone charger","charger","Keeps your phone topped up on the move","car phone charger usb c","plug"],
-  ["blanket","Blanket","blanket","Comfortable if you're waiting a while","car blanket","blanket"],
+  ["plug","Car phone charger","plug","Keeps your phone topped up on the move","car phone charger usb c","plug"],
+  ["blanket","Blanket","warm","Comfortable if you're waiting a while","car blanket","blanket"],
   ["water","Water","water","A couple of bottles in the boot","bottled water 500ml","bottle"],
-  ["snack","Snack bars","snacks","Long-life and easy to share","cereal bars multipack","snack"],
-  ["aid","First aid kit","first aid","A compact kit for the glovebox","car first aid kit","aid"],
-  ["map","Road atlas","atlas","Works with no signal at all","road atlas britain","map"],
-  ["gauge","Tyre inflator","inflator","Top up a soft tyre at the roadside","portable tyre inflator","gauge"]]},
+  ["snack","Snack bars","snack","Long-life and easy to share","cereal bars multipack","snack"],
+  ["aid","First aid kit","aid","A compact kit for the glovebox","car first aid kit","aid"],
+  ["map","Road atlas","MAP","Works with no signal at all","road atlas britain","map"],
+  ["gauge","Tyre inflator","pump","Top up a soft tyre at the roadside","portable tyre inflator","gauge"]]},
  {id:"pets",tab:"Pets",title:"Pets box",items:[
   ["food","Pet food","food","Three days of their usual food","pet food pouches","can"],
   ["bowl","Water & bowl","bowl","A folding bowl and a bottle","collapsible pet bowl","bowl"],
   ["lead","Spare lead","lead","One by the door, one in the box","dog lead","lead"],
-  ["carrier","Pet carrier","carrier","A calm, familiar way to travel","pet carrier","carrier"],
-  ["aid","Pet first aid","first aid","Bandage, wipes and tick remover","pet first aid kit","aid"],
-  ["pill","Medicines","medicines","A few days of anything they take","pet pill box","pill"],
-  ["bags","Poo bags","poo bags","A roll you won't miss from the drawer","dog poo bags","bags"],
-  ["docs","Vet records","vet notes","Vaccination and microchip details","waterproof document pouch","docs"],
-  ["blanket","Pet blanket","blanket","Smells like home","pet blanket","blanket"],
+  ["carrier","Pet carrier","carry","A calm, familiar way to travel","pet carrier","carrier"],
+  ["aid","Pet first aid","aid","Bandage, wipes and tick remover","pet first aid kit","aid"],
+  ["pill","Medicines","meds","A few days of anything they take","pet pill box","pill"],
+  ["bags","Poo bags","bags","A roll you won't miss from the drawer","dog poo bags","bags"],
+  ["docs","Vet records","vet","Vaccination and microchip details","waterproof document pouch","docs"],
+  ["blanket","Pet blanket","warm","Smells like home","pet blanket","blanket"],
   ["ball","Favourite toy","toy","Something familiar to settle them","pet toy","ball"],
-  ["tag","ID tag","id tag","Your number on their collar","pet id tag","tag"],
+  ["tag","ID tag","tag","Your number on their collar","pet id tag","tag"],
   ["tray","Travel litter tray","litter","Folds flat for cats on the move","travel litter tray","tray"]]}
 ];
 TABS.forEach(function(t){t.items=t.items.map(function(a){return {id:a[0],name:a[1],short:a[2],why:a[3],url:amz(a[4]),icon:a[5]};});});
@@ -354,26 +392,26 @@ var NS="http://www.w3.org/2000/svg";
 function el(n,attrs,parent){var e=document.createElementNS(NS,n);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
 function $(id){return document.getElementById(id);}
 
-/* Box geometry */
-var FX=46,FY=44,FW=308,FH=210; /* inner floor */
+/* Box geometry — shorter flap overhang, viewBox 400x264 */
+var FX=46,FY=30,FW=308,FH=210;
 function drawBox(t,added){
   var svg=$("boxSvg");svg.innerHTML="";
   var ink="#22262A";
   var common={stroke:ink,"stroke-width":2,"stroke-linecap":"round","stroke-linejoin":"round"};
   function P(d,fill,extra){var a={d:d,fill:fill};for(var k in common)a[k]=common[k];if(extra)for(var j in extra)a[j]=extra[j];return el("path",a,svg);}
-  /* flaps folded out, slightly hand-drawn */
-  P("M40 38 L58 7.5 Q200 4 342 8 L360 38.5 Z","#C89B62");
-  P("M40.5 260 L60 286 Q200 289.5 341 285.5 L359.5 260 Z","#C89B62");
-  P("M40 38 L6 60 Q3.5 149 6.5 238 L40.5 260 Z","#C89B62");
-  P("M360 38.5 L394 61 Q396.5 150 393.5 239 L359.5 260 Z","#C89B62");
+  /* flaps folded out, trimmed overhang */
+  P("M40 24 L56 10 Q200 7 344 10 L360 24.5 Z","#C89B62");
+  P("M40.5 246 L56 259 Q200 261 344 259 L359.5 246 Z","#C89B62");
+  P("M40 24 L16 38 Q13 135 16.5 232 L40.5 246 Z","#C89B62");
+  P("M360 24.5 L384 38 Q387 135 383.5 232 L359.5 246 Z","#C89B62");
   /* fold creases */
-  el("path",{d:"M62 22 Q200 19.5 338 22.5",fill:"none",stroke:"#9E7442","stroke-width":1.5,"stroke-linecap":"round","stroke-dasharray":"1 5"},svg);
-  el("path",{d:"M64 272 Q200 274.5 336 271.5",fill:"none",stroke:"#9E7442","stroke-width":1.5,"stroke-linecap":"round","stroke-dasharray":"1 5"},svg);
+  el("path",{d:"M58 16 Q200 14 342 16.5",fill:"none",stroke:"#9E7442","stroke-width":1.5,"stroke-linecap":"round","stroke-dasharray":"1 5"},svg);
+  el("path",{d:"M58 254 Q200 256 342 254",fill:"none",stroke:"#9E7442","stroke-width":1.5,"stroke-linecap":"round","stroke-dasharray":"1 5"},svg);
   /* tape strip on top flap */
-  el("path",{d:"M246 3 L284 4.5 L282 30 L244 28.5 Z",fill:"#E9D7BC",stroke:"#9E7442","stroke-width":1.5,"stroke-linejoin":"round",opacity:.95},svg);
-  el("path",{d:"M246 3 l3 2 3-2 3 2 3-2 3 2 3-2 3 2 3-2 3 2 3-2 3 2 3-1",fill:"none",stroke:"#9E7442","stroke-width":1},svg);
+  el("path",{d:"M248 8 L276 9 L274.5 22 L246.5 21 Z",fill:"#E9D7BC",stroke:"#9E7442","stroke-width":1.5,"stroke-linejoin":"round",opacity:.95},svg);
+  el("path",{d:"M248 8 l2.5 1.5 2.5-1.5 2.5 1.5 2.5-1.5 2.5 1.5 2.5-1.5 2.5 1.5 2.5-1.5 2.5 1",fill:"none",stroke:"#9E7442","stroke-width":1},svg);
   /* box rim (walls seen from above) */
-  P("M40 38 Q200 36.5 360 38.5 L359.5 260 Q200 261.5 40.5 260 Z","#B88A52");
+  P("M40 24 Q200 22.5 360 24.5 L359.5 246 Q200 247.5 40.5 246 Z","#B88A52");
   /* inner floor */
   P("M"+FX+" "+FY+" Q200 "+(FY-1)+" "+(FX+FW)+" "+FY+" L"+(FX+FW)+" "+(FY+FH)+" Q200 "+(FY+FH+1)+" "+FX+" "+(FY+FH)+" Z","#E9D7BC",{"stroke-width":1.5});
   /* inner wall shading on top/left */
@@ -396,7 +434,7 @@ function renderSlot(g,it,filled,animate){
   while(g.firstChild)g.removeChild(g.firstChild);
   var x=+g.dataset.x,y=+g.dataset.y,w=+g.dataset.w,h=+g.dataset.h,m=5;
   g.setAttribute("class","slot"+(filled?" filled":""));
-  g.setAttribute("aria-label",it.name+(filled?", in your box":", empty slot")+". Show in list");
+  g.setAttribute("aria-label",it.name+(filled?", selected":", not selected")+". Show in list");
   el("rect",{"class":"cell",x:x+m,y:y+m,width:w-m*2,height:h-m*2,rx:7},g);
   if(filled){
     var inner=el("g",{"class":animate?"pop":""},g);
@@ -410,9 +448,33 @@ function renderSlot(g,it,filled,animate){
   }
 }
 function fitLabels(){
+  var svg=$("boxSvg");
+  if(!svg)return;
+  var rect=svg.getBoundingClientRect();
+  if(!rect.width)return;
+  var scale=rect.width/400;
+  var fs=11.5/scale;
   Array.prototype.forEach.call(document.querySelectorAll("#boxSvg .lbl"),function(t){
-    var g=t.parentNode.closest?t.closest(".slot"):null;if(!g)return;var max=(+g.dataset.w)-16,fs=14;
-    try{while(t.getComputedTextLength()>max&&fs>12){fs-=.5;t.style.fontSize=fs+"px";}}catch(e){}
+    var g=t.closest(".slot");if(!g)return;
+    var max=(+g.dataset.w)-16;
+    t.style.fontSize=fs+"px";
+    t.style.letterSpacing=".04em";
+    var original=t.getAttribute("data-full")||t.textContent;
+    t.setAttribute("data-full",original);
+    t.textContent=original;
+    try{
+      if(t.getComputedTextLength()<=max)return;
+      var words=original.split(/\s+/);
+      if(words.length>1){
+        t.textContent=words[0];
+        if(t.getComputedTextLength()<=max)return;
+      }
+      var s=original;
+      while(s.length>1&&t.getComputedTextLength()>max){
+        s=s.slice(0,-1);
+        t.textContent=s;
+      }
+    }catch(e){}
   });
 }
 function goToRow(id){
@@ -440,10 +502,19 @@ function renderTabs(){
     i=(i+(e.key==="ArrowRight"?1:-1)+TABS.length)%TABS.length;switchTab(TABS[i].id);$("tab-"+TABS[i].id).focus();
   });
 }
+function hideResetConfirm(){
+  var c=$("resetConfirm"), b=$("resetBtn");
+  if(c)c.hidden=true;
+  if(b)b.hidden=false;
+}
+function selectedCount(tab){
+  return load(tab.id).filter(function(id){return tab.items.some(function(x){return x.id===id;});}).length;
+}
 function switchTab(id){
   current=id;try{localStorage.setItem(KEY+"tab",id);}catch(e){}
   Array.prototype.forEach.call(document.querySelectorAll(".tab"),function(b){var on=b.dataset.id===id;b.setAttribute("aria-selected",on?"true":"false");b.tabIndex=on?0:-1;});
   var a=$("tab-"+id);if(a&&a.scrollIntoView)a.scrollIntoView({block:"nearest",inline:"nearest"});
+  hideResetConfirm();
   render();
 }
 function render(){
@@ -456,12 +527,10 @@ function render(){
   t.items.forEach(function(it){
     var li=document.createElement("li");li.className="item"+(added.indexOf(it.id)>-1?" added":"");li.dataset.id=it.id;li.id="row-"+it.id;
     li.innerHTML='<span class="ic">'+iconSvg(it.icon)+'</span>'+
-      '<div class="txt"><p class="nm">'+esc(it.name)+'</p><p class="why">'+esc(it.why)+'</p></div>'+
+      '<div class="txt"><p class="nm">'+esc(it.name)+'</p><p class="why">'+esc(it.why)+'</p><p class="shop-note">Opens Amazon search</p></div>'+
       '<div class="act">'+
-        '<a class="add" href="'+esc(it.url)+'" target="_blank" rel="noopener noreferrer" aria-label="Add '+esc(it.name)+' to your box (opens Amazon search in a new tab, mockup link)">Add</a>'+
-        '<span class="note">Opens Amazon search<br>Mockup link</span>'+
-        '<span class="inbox">In your box ✓</span>'+
-        '<button type="button" class="change" aria-label="Change: take '+esc(it.name)+' out of your box">Change</button>'+
+        '<a class="add" href="'+esc(it.url)+'" target="_blank" rel="noopener noreferrer" aria-label="Find '+esc(it.name)+' at retailer (opens Amazon search in a new tab)">Find at retailer</a>'+
+        '<span class="status">Selected ✓<span class="sep"> · </span><button type="button" class="change" aria-label="Change: remove '+esc(it.name)+' from the checklist">Change</button></span>'+
       '</div>';
     li.querySelector(".add").addEventListener("click",function(){setItem(it.id,true);});
     li.querySelector(".change").addEventListener("click",function(){setItem(it.id,false);});
@@ -478,19 +547,19 @@ function setItem(id,on){
   updateProgress();
 }
 function updateProgress(){
-  var t=tabById(current), n=t.items.length, k=load(current).filter(function(id){return t.items.some(function(x){return x.id===id;});}).length;
-  $("progText").textContent="Your box is "+k+"/"+n+" ready";
+  var t=tabById(current), n=t.items.length, k=selectedCount(t);
+  $("progText").textContent=k+" of "+n+" selected";
   var s=$("segs");s.innerHTML="";for(var i=0;i<n;i++){var sp=document.createElement("span");if(i<k)sp.className="on";s.appendChild(sp);}
-  $("buyBar").textContent="Buy the whole box · "+k+" of "+n+" added";
-  $("buyDesk").textContent="Buy the whole box · "+k+" of "+n+" added";
+  $("buyBar").textContent="Buy the whole box · "+k+" of "+n+" selected";
+  $("buyDesk").textContent="Buy the whole box · "+k+" of "+n+" selected";
 }
 function openModal(){
   var t=tabById(current), added=load(current), ul=$("mlist");ul.innerHTML="";
-  $("buyModalTitle").textContent="Buy the whole "+t.title.replace(/ box$/,"").toLowerCase()+" box";
+  $("buyModalTitle").textContent="Mockup: no checkout yet";
   t.items.forEach(function(it){
     var have=added.indexOf(it.id)>-1, li=document.createElement("li");
-    li.innerHTML='<div><div>'+esc(it.name)+'</div><div class="st'+(have?' ok':'')+'">'+(have?'In your box ✓':'Not added yet')+'</div></div>'+
-      '<a href="'+esc(it.url)+'" target="_blank" rel="noopener noreferrer">Mockup link ↗</a>';
+    li.innerHTML='<div><div>'+esc(it.name)+'</div><div class="st'+(have?' ok':'')+'">'+(have?'Selected ✓':'Not selected')+'</div></div>'+
+      '<a href="'+esc(it.url)+'" target="_blank" rel="noopener noreferrer">Retailer search ↗</a>';
     ul.appendChild(li);
   });
   var d=$("buyModal");if(d.showModal)d.showModal();else d.setAttribute("open","");
@@ -500,11 +569,24 @@ $("buyDesk").addEventListener("click",openModal);
 $("closeModal").addEventListener("click",function(){$("buyModal").close();});
 $("buyModal").addEventListener("click",function(e){if(e.target===this)this.close();});
 $("resetBtn").addEventListener("click",function(){
-  var t=tabById(current);
-  if(window.confirm("Empty your "+t.title.toLowerCase()+" and start again?")){save(current,[]);render();}
+  var t=tabById(current), k=selectedCount(t);
+  if(!k)return;
+  $("resetPrompt").textContent="Clear all "+k+"?";
+  $("resetConfirm").hidden=false;
+  $("resetBtn").hidden=true;
+  $("resetYes").focus();
+});
+$("resetYes").addEventListener("click",function(){
+  save(current,[]);
+  hideResetConfirm();
+  render();
+});
+$("resetNo").addEventListener("click",function(){
+  hideResetConfirm();
+  $("resetBtn").focus();
 });
 function buildPrint(){
-  var h='<h1>Be Ready Box checklist</h1><p class="sub">Tick things off as you pack them. Printed '+new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})+'. Mockup.</p>';
+  var h='<h1>Be Ready Box checklist</h1><p class="sub">Tick items on your checklist. Printed '+new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})+'. Mockup.</p>';
   var order=[tabById(current)].concat(TABS.filter(function(t){return t.id!==current;}));
   order.forEach(function(t){
     var added=load(t.id);
@@ -516,6 +598,7 @@ function buildPrint(){
 }
 window.addEventListener("beforeprint",buildPrint);
 $("printBtn").addEventListener("click",function(){buildPrint();window.print();});
+window.addEventListener("resize",fitLabels);
 renderTabs();render();buildPrint();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitLabels);
 })();
 </script>
