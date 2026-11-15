@@ -62,7 +62,7 @@ header.top{display:flex;align-items:center;justify-content:space-between;gap:12p
 .box-svg{display:block;width:100%;height:auto;max-height:260px}
 .slot{cursor:pointer}
 .slot .cell{fill:transparent;stroke:var(--fold);stroke-width:1.5;stroke-dasharray:4 4}
-.slot .lbl{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;fill:#6b4f2c;text-anchor:middle;dominant-baseline:middle}
+.slot .lbl{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.02em;line-height:1.1;text-transform:uppercase;fill:#6b4f2c;text-anchor:middle;dominant-baseline:middle}
 .slot.filled .cell{fill:var(--tint);stroke:var(--moss);stroke-dasharray:none;stroke-width:2}
 .slot.filled .lbl{fill:var(--moss)}
 .slot .ico{fill:none;stroke:var(--moss);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -240,8 +240,8 @@ dialog::backdrop{background:rgba(34,38,42,.45)}
             <span aria-hidden="true">/</span>
             <button type="button" id="resetNo">No</button>
           </div>
-          <p class="progress-note">Selecting items builds your checklist; it doesn't buy anything.</p>
           <div class="segs" id="segs" aria-hidden="true"></div>
+          <p class="progress-note">Selecting items builds your checklist; it doesn't buy anything.</p>
         </div>
       </div>
       <button type="button" class="buy buy-desk" id="buyDesk">Buy the whole box</button>
@@ -332,51 +332,51 @@ var TABS=[
   ["torch","Torch","torch","Lights the stairs if the power goes","led torch","torch"],
   ["radio","Wind-up radio","radio","Keeps you up to date without a charger","wind up radio","radio"],
   ["power","Power bank","power","Keeps your phone going for a day or two","power bank 20000mah","power"],
-  ["aid","First aid kit","aid","Plasters and basics in one place","first aid kit home","aid"],
-  ["batt","Batteries","batts","Spares for the torch and radio","aa batteries pack","batt"],
-  ["candle","Candles & matches","wax","A gentle backup light, used with care","emergency candles and matches","candle"],
+  ["aid","First aid kit","first aid","Plasters and basics in one place","first aid kit home","aid"],
+  ["batt","Batteries","battery","Spares for the torch and radio","aa batteries pack","batt"],
+  ["candle","Candles & matches","candle","A gentle backup light, used with care","emergency candles and matches","candle"],
   ["cash","Cash","cash","Small notes, in case card machines are down","cash envelope wallet","cash"],
-  ["docs","Documents pouch","docs","Copies of the important papers, kept dry","waterproof document pouch","docs"],
-  ["whistle","Whistle","whist","Easy to hear, light to carry","safety whistle","whistle"],
-  ["foil","Foil blankets","foil","Fold small, keep warmth in","foil blankets pack","blanket"]]},
+  ["docs","Documents pouch","papers","Copies of the important papers, kept dry","waterproof document pouch","docs"],
+  ["whistle","Whistle","whistle","Easy to hear, light to carry","safety whistle","whistle"],
+  ["foil","Foil blankets","blankets","Fold small, keep warmth in","foil blankets pack","blanket"]]},
  {id:"power",tab:"Power cut",title:"Power cut box",items:[
-  ["headtorch","Head torch","head","Hands free for cooking and stairs","head torch rechargeable","headtorch"],
-  ["lantern","LED lantern","lamp","Lights a whole room, not just a spot","led camping lantern","lantern"],
+  ["headtorch","Head torch","head torch","Hands free for cooking and stairs","head torch rechargeable","headtorch"],
+  ["lantern","LED lantern","lantern","Lights a whole room, not just a spot","led camping lantern","lantern"],
   ["power","Power bank","power","Charge it now, use it when you need it","power bank 20000mah","power"],
-  ["batt","Spare batteries","batts","AA and AAA to fit what you own","aa aaa batteries pack","batt"],
+  ["batt","Spare batteries","battery","AA and AAA to fit what you own","aa aaa batteries pack","batt"],
   ["radio","Wind-up radio","radio","Local news without mains or wifi","wind up radio","radio"],
   ["flask","Vacuum flask","flask","Hot drinks stay hot for hours","vacuum flask 1 litre","flask"],
-  ["blanket","Warm blankets","warm","An extra layer for the evening","fleece blanket","blanket"],
+  ["blanket","Warm blankets","blankets","An extra layer for the evening","fleece blanket","blanket"],
   ["tealight","LED tea lights","lights","Soft light with no flame","led tea lights battery","tealight"],
-  ["coolbox","Cool box & ice packs","cool","Keeps the fridge basics cold a bit longer","cool box ice packs","coolbox"],
-  ["food","No-cook snacks","snack","Things you can eat without a hob","no cook snacks long life","can"],
+  ["coolbox","Cool box & ice packs","cool box","Keeps the fridge basics cold a bit longer","cool box ice packs","coolbox"],
+  ["food","No-cook snacks","snacks","Things you can eat without a hob","no cook snacks long life","can"],
   ["water","Bottled water","water","In case the pumps pause too","bottled water 5 litre","bottle"],
-  ["list","Paper phone list","list","Numbers you'd want if your phone runs flat","address book small","list"]]},
+  ["list","Paper phone list","numbers","Numbers you'd want if your phone runs flat","address book small","list"]]},
  {id:"car",tab:"Car",title:"Car box",items:[
-  ["scraper","Scraper & de-icer","ice","Clear windows on frosty mornings","ice scraper de icer","scraper"],
+  ["scraper","Scraper & de-icer","scraper","Clear windows on frosty mornings","ice scraper de icer","scraper"],
   ["leads","Jump leads","leads","A quick start if the battery is flat","jump leads","leads"],
   ["vest","Hi-vis vest","hi-vis","Easy to be seen at the roadside","hi vis vest","vest"],
-  ["triangle","Warning triangle","warn","Lets other drivers know early","warning triangle car","triangle"],
+  ["triangle","Warning triangle","triangle","Lets other drivers know early","warning triangle car","triangle"],
   ["torch","Torch","torch","For checking tyres in the dark","led torch","torch"],
-  ["plug","Car phone charger","plug","Keeps your phone topped up on the move","car phone charger usb c","plug"],
-  ["blanket","Blanket","warm","Comfortable if you're waiting a while","car blanket","blanket"],
+  ["plug","Car phone charger","charger","Keeps your phone topped up on the move","car phone charger usb c","plug"],
+  ["blanket","Blanket","blanket","Comfortable if you're waiting a while","car blanket","blanket"],
   ["water","Water","water","A couple of bottles in the boot","bottled water 500ml","bottle"],
-  ["snack","Snack bars","snack","Long-life and easy to share","cereal bars multipack","snack"],
-  ["aid","First aid kit","aid","A compact kit for the glovebox","car first aid kit","aid"],
+  ["snack","Snack bars","snacks","Long-life and easy to share","cereal bars multipack","snack"],
+  ["aid","First aid kit","first aid","A compact kit for the glovebox","car first aid kit","aid"],
   ["map","Road atlas","MAP","Works with no signal at all","road atlas britain","map"],
-  ["gauge","Tyre inflator","pump","Top up a soft tyre at the roadside","portable tyre inflator","gauge"]]},
+  ["gauge","Tyre inflator","inflator","Top up a soft tyre at the roadside","portable tyre inflator","gauge"]]},
  {id:"pets",tab:"Pets",title:"Pets box",items:[
   ["food","Pet food","food","Three days of their usual food","pet food pouches","can"],
   ["bowl","Water & bowl","bowl","A folding bowl and a bottle","collapsible pet bowl","bowl"],
   ["lead","Spare lead","lead","One by the door, one in the box","dog lead","lead"],
-  ["carrier","Pet carrier","carry","A calm, familiar way to travel","pet carrier","carrier"],
-  ["aid","Pet first aid","aid","Bandage, wipes and tick remover","pet first aid kit","aid"],
-  ["pill","Medicines","meds","A few days of anything they take","pet pill box","pill"],
-  ["bags","Poo bags","bags","A roll you won't miss from the drawer","dog poo bags","bags"],
-  ["docs","Vet records","vet","Vaccination and microchip details","waterproof document pouch","docs"],
-  ["blanket","Pet blanket","warm","Smells like home","pet blanket","blanket"],
+  ["carrier","Pet carrier","carrier","A calm, familiar way to travel","pet carrier","carrier"],
+  ["aid","Pet first aid","first aid","Bandage, wipes and tick remover","pet first aid kit","aid"],
+  ["pill","Medicines","medicines","A few days of anything they take","pet pill box","pill"],
+  ["bags","Poo bags","poo bags","A roll you won't miss from the drawer","dog poo bags","bags"],
+  ["docs","Vet records","vet notes","Vaccination and microchip details","waterproof document pouch","docs"],
+  ["blanket","Pet blanket","blanket","Smells like home","pet blanket","blanket"],
   ["ball","Favourite toy","toy","Something familiar to settle them","pet toy","ball"],
-  ["tag","ID tag","tag","Your number on their collar","pet id tag","tag"],
+  ["tag","ID tag","id tag","Your number on their collar","pet id tag","tag"],
   ["tray","Travel litter tray","litter","Folds flat for cats on the move","travel litter tray","tray"]]}
 ];
 TABS.forEach(function(t){t.items=t.items.map(function(a){return {id:a[0],name:a[1],short:a[2],why:a[3],url:amz(a[4]),icon:a[5]};});});
@@ -392,26 +392,26 @@ var NS="http://www.w3.org/2000/svg";
 function el(n,attrs,parent){var e=document.createElementNS(NS,n);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
 function $(id){return document.getElementById(id);}
 
-/* Box geometry — shorter flap overhang, viewBox 400x264 */
-var FX=46,FY=30,FW=308,FH=210;
+/* Box geometry — wider floor so 11px words (BATTERY, WHISTLE, MEDICINES) fit at 360 */
+var FX=12,FY=30,FW=376,FH=210;
 function drawBox(t,added){
   var svg=$("boxSvg");svg.innerHTML="";
   var ink="#22262A";
   var common={stroke:ink,"stroke-width":2,"stroke-linecap":"round","stroke-linejoin":"round"};
   function P(d,fill,extra){var a={d:d,fill:fill};for(var k in common)a[k]=common[k];if(extra)for(var j in extra)a[j]=extra[j];return el("path",a,svg);}
-  /* flaps folded out, trimmed overhang */
-  P("M40 24 L56 10 Q200 7 344 10 L360 24.5 Z","#C89B62");
-  P("M40.5 246 L56 259 Q200 261 344 259 L359.5 246 Z","#C89B62");
-  P("M40 24 L16 38 Q13 135 16.5 232 L40.5 246 Z","#C89B62");
-  P("M360 24.5 L384 38 Q387 135 383.5 232 L359.5 246 Z","#C89B62");
+  /* flaps folded out, trimmed overhang, sides kept short so the floor can run wide */
+  P("M8 24 L24 10 Q200 7 376 10 L392 24.5 Z","#C89B62");
+  P("M8.5 246 L24 259 Q200 261 376 259 L391.5 246 Z","#C89B62");
+  P("M8 24 L2 36 Q1 135 2.5 232 L8.5 246 Z","#C89B62");
+  P("M392 24.5 L398 36 Q399 135 397.5 232 L391.5 246 Z","#C89B62");
   /* fold creases */
-  el("path",{d:"M58 16 Q200 14 342 16.5",fill:"none",stroke:"#9E7442","stroke-width":1.5,"stroke-linecap":"round","stroke-dasharray":"1 5"},svg);
-  el("path",{d:"M58 254 Q200 256 342 254",fill:"none",stroke:"#9E7442","stroke-width":1.5,"stroke-linecap":"round","stroke-dasharray":"1 5"},svg);
+  el("path",{d:"M26 16 Q200 14 374 16.5",fill:"none",stroke:"#9E7442","stroke-width":1.5,"stroke-linecap":"round","stroke-dasharray":"1 5"},svg);
+  el("path",{d:"M26 254 Q200 256 374 254",fill:"none",stroke:"#9E7442","stroke-width":1.5,"stroke-linecap":"round","stroke-dasharray":"1 5"},svg);
   /* tape strip on top flap */
-  el("path",{d:"M248 8 L276 9 L274.5 22 L246.5 21 Z",fill:"#E9D7BC",stroke:"#9E7442","stroke-width":1.5,"stroke-linejoin":"round",opacity:.95},svg);
-  el("path",{d:"M248 8 l2.5 1.5 2.5-1.5 2.5 1.5 2.5-1.5 2.5 1.5 2.5-1.5 2.5 1.5 2.5-1.5 2.5 1",fill:"none",stroke:"#9E7442","stroke-width":1},svg);
+  el("path",{d:"M268 8 L296 9 L294.5 22 L266.5 21 Z",fill:"#E9D7BC",stroke:"#9E7442","stroke-width":1.5,"stroke-linejoin":"round",opacity:.95},svg);
+  el("path",{d:"M268 8 l2.5 1.5 2.5-1.5 2.5 1.5 2.5-1.5 2.5 1.5 2.5-1.5 2.5 1.5 2.5-1.5 2.5 1",fill:"none",stroke:"#9E7442","stroke-width":1},svg);
   /* box rim (walls seen from above) */
-  P("M40 24 Q200 22.5 360 24.5 L359.5 246 Q200 247.5 40.5 246 Z","#B88A52");
+  P("M8 24 Q200 22.5 392 24.5 L391.5 246 Q200 247.5 8.5 246 Z","#B88A52");
   /* inner floor */
   P("M"+FX+" "+FY+" Q200 "+(FY-1)+" "+(FX+FW)+" "+FY+" L"+(FX+FW)+" "+(FY+FH)+" Q200 "+(FY+FH+1)+" "+FX+" "+(FY+FH)+" Z","#E9D7BC",{"stroke-width":1.5});
   /* inner wall shading on top/left */
@@ -436,15 +436,69 @@ function renderSlot(g,it,filled,animate){
   g.setAttribute("class","slot"+(filled?" filled":""));
   g.setAttribute("aria-label",it.name+(filled?", selected":", not selected")+". Show in list");
   el("rect",{"class":"cell",x:x+m,y:y+m,width:w-m*2,height:h-m*2,rx:7},g);
+  var cx=x+w/2;
   if(filled){
     var inner=el("g",{"class":animate?"pop":""},g);
-    var s=1.1, ix=x+w/2-12*s, iy=y+m+9;
+    var s=1, ix=cx-12*s, iy=y+m+6;
     el("path",{"class":"ico",d:ICONS[it.icon],transform:"translate("+ix+" "+iy+") scale("+s+")"},inner);
-    var tl=el("text",{"class":"lbl",x:x+w/2,y:y+h-m-10},inner);tl.textContent=it.short;
+    var ay=y+h-m-7;
+    var tl=el("text",{"class":"lbl",x:cx,y:ay,"data-full":it.short,"data-align":"bottom","data-anchor":String(ay)},inner);
+    tl.textContent=it.short;
     var tk=el("g",{"class":"tick"+(animate?" flash":""),transform:"translate("+(x+w-m-9)+" "+(y+m+9)+")"},inner);
     el("circle",{r:7.5,cx:0,cy:0},tk);el("path",{d:"M-3.5 0.2 L-1 2.8 L3.6 -2.4"},tk);
   }else{
-    var t=el("text",{"class":"lbl",x:x+w/2,y:y+h/2},g);t.textContent=it.short;
+    var ay=y+h/2;
+    var t=el("text",{"class":"lbl",x:cx,y:ay,"data-full":it.short,"data-align":"center","data-anchor":String(ay)},g);
+    t.textContent=it.short;
+  }
+}
+function measureLabel(svg,str,fs,ls){
+  var p=svg.querySelector("#lblProbe");
+  if(!p){
+    p=el("text",{id:"lblProbe",x:"-2000",y:"-2000","aria-hidden":"true"},svg);
+    p.style.visibility="hidden";
+    p.style.pointerEvents="none";
+    p.style.fontFamily="Atkinson Hyperlegible, system-ui, sans-serif";
+    p.style.fontWeight="700";
+    p.style.textTransform="uppercase";
+  }
+  p.style.fontSize=fs+"px";
+  p.style.letterSpacing=ls;
+  p.textContent=String(str).toUpperCase();
+  try{return p.getComputedTextLength();}catch(e){return 0;}
+}
+function splitTwoLines(str,max,fs,ls,svg){
+  var words=str.split(/\s+/);
+  if(words.length<2)return null;
+  var best=null;
+  for(var i=1;i<words.length;i++){
+    var a=words.slice(0,i).join(" "), b=words.slice(i).join(" ");
+    if(measureLabel(svg,a,fs,ls)<=max&&measureLabel(svg,b,fs,ls)<=max){
+      var bal=Math.abs(a.length-b.length);
+      if(!best||bal<best.bal)best={lines:[a,b],bal:bal};
+    }
+  }
+  return best?best.lines:null;
+}
+function paintLabel(textEl,lines,x,anchor,align,fs,ls){
+  while(textEl.firstChild)textEl.removeChild(textEl.firstChild);
+  textEl.style.fontSize=fs+"px";
+  textEl.style.letterSpacing=ls;
+  var lh=fs*1.1, start;
+  if(align==="bottom")start=anchor-(lines.length-1)*lh;
+  else start=anchor-((lines.length-1)*lh)/2;
+  textEl.setAttribute("x",x);
+  textEl.setAttribute("y",start);
+  if(lines.length===1){
+    textEl.textContent=lines[0];
+  }else{
+    lines.forEach(function(line,i){
+      var ts=document.createElementNS(NS,"tspan");
+      ts.setAttribute("x",x);
+      ts.setAttribute("y",start+i*lh);
+      ts.textContent=line;
+      textEl.appendChild(ts);
+    });
   }
 }
 function fitLabels(){
@@ -453,29 +507,37 @@ function fitLabels(){
   var rect=svg.getBoundingClientRect();
   if(!rect.width)return;
   var scale=rect.width/400;
-  var fs=11.5/scale;
+  var fs=11/scale;
   Array.prototype.forEach.call(document.querySelectorAll("#boxSvg .lbl"),function(t){
+    if(t.id==="lblProbe")return;
     var g=t.closest(".slot");if(!g)return;
-    var max=(+g.dataset.w)-16;
-    t.style.fontSize=fs+"px";
-    t.style.letterSpacing=".04em";
-    var original=t.getAttribute("data-full")||t.textContent;
+    var max=Math.max(24,(+g.dataset.w)-12);
+    var original=(t.getAttribute("data-full")||"").replace(/\s+/g," ").trim();
+    if(!original)return;
     t.setAttribute("data-full",original);
-    t.textContent=original;
+    var x=+t.getAttribute("x")||(+g.dataset.x + +g.dataset.w/2);
+    var anchor=+(t.getAttribute("data-anchor")||t.getAttribute("y"));
+    var align=t.getAttribute("data-align")||"center";
+    var ls=".02em", lines=null, low=original.toLowerCase();
     try{
-      if(t.getComputedTextLength()<=max)return;
-      var words=original.split(/\s+/);
-      if(words.length>1){
-        t.textContent=words[0];
-        if(t.getComputedTextLength()<=max)return;
+      if(low==="first aid"){
+        lines=["first","aid"];
+        if(measureLabel(svg,"first",fs,ls)>max||measureLabel(svg,"aid",fs,ls)>max)ls="0";
+      }else if(measureLabel(svg,original,fs,ls)<=max){
+        lines=[original];
+      }else if(/\s/.test(original)&&(lines=splitTwoLines(original,max,fs,ls,svg))){
+        /* wrapped at .02em */
+      }else if(/\s/.test(original)&&(ls="0")&&(lines=splitTwoLines(original,max,fs,ls,svg))){
+        /* wrapped at 0 */
+      }else if(measureLabel(svg,original,fs,"0")<=max){
+        ls="0";lines=[original];
+      }else{
+        ls="0";lines=[original];
       }
-      var s=original;
-      while(s.length>1&&t.getComputedTextLength()>max){
-        s=s.slice(0,-1);
-        t.textContent=s;
-      }
-    }catch(e){}
+    }catch(e){lines=[original];}
+    paintLabel(t,lines,x,anchor,align,fs,ls);
   });
+  var probe=svg.querySelector("#lblProbe");if(probe&&probe.parentNode)probe.parentNode.removeChild(probe);
 }
 function goToRow(id){
   var row=document.querySelector('.item[data-id="'+id+'"]');if(!row)return;
