@@ -49,6 +49,10 @@ async def labels_for_all_tabs(page, tag):
         await page.click(f"#tab-{tab}")
         await page.wait_for_timeout(250)
         rows=await page.evaluate(LABEL_JS)
+        tab_whys=await page.eval_on_selector_all(".item .why","els=>els.map(e=>e.textContent.trim())")
+        if any(len(w)>60 for w in tab_whys):
+            issues.append((tag,tab,{"why_too_long":[w for w in tab_whys if len(w)>60]}))
+            print("    WHY over 60:", [w for w in tab_whys if len(w)>60])
         print(f"[{tag} {tab}]")
         for r in rows:
             shown=" / ".join(r["shown"]).upper()
@@ -93,7 +97,22 @@ async def main():
         assert "Charged power bank" in home_names
         water_why=await page.locator(".item").first.locator(".why").text_content()
         print("water why:", water_why)
-        assert "3 litres" in water_why
+        assert water_why.strip()=="Three litres each a day, for three days."
+        home_whys=await page.eval_on_selector_all(".item .why","els=>els.map(e=>e.textContent.trim())")
+        print("home whys:", home_whys)
+        assert all(len(w)<=60 for w in home_whys), home_whys
+        # tab aligns with 20px page margin
+        align=await page.evaluate("""() => {
+          const wrap=document.querySelector('.wrap');
+          const pad=parseFloat(getComputedStyle(wrap).paddingLeft);
+          const wrapLeft=wrap.getBoundingClientRect().left+pad;
+          const tab=document.querySelector('#tab-home');
+          const tabLeft=tab.getBoundingClientRect().left+parseFloat(getComputedStyle(tab).paddingLeft);
+          return {pad, wrapLeft, tabLeft, delta:+(tabLeft-wrapLeft).toFixed(2)};
+        }""")
+        print("tab align:", align)
+        assert abs(align["delta"])<=1, align
+        assert align["pad"]==20
         sources=await page.locator("footer .sources").text_content()
         print("sources:", sources)
         assert "Based on" in sources and "Not affiliated" in sources
@@ -107,6 +126,43 @@ async def main():
           return [...p.children].map(el=>el.id||el.className);
         }""")
         print("progress children:", order)
+
+        async def first_row_clears(page, tag):
+            await page.evaluate("window.scrollTo(0,0)")
+            await page.wait_for_timeout(300)
+            row_box=await page.locator(".item").first.bounding_box()
+            bar_box=await page.locator(".buybar").bounding_box()
+            icon=await page.locator(".item").first.locator(".ic").bounding_box()
+            full=row_box["y"]>=0 and (row_box["y"]+row_box["height"])<=bar_box["y"]+0.5
+            icon_vis=icon and icon["y"]>=0 and (icon["y"]+icon["height"])<=bar_box["y"]+0.5
+            print(f"empty first row [{tag}] y:", round(row_box["y"],1), "h:", round(row_box["height"],1),
+                  "bar y:", round(bar_box["y"],1), "full:", full, "icon_visible:", icon_vis)
+            return full, icon_vis, row_box, bar_box
+
+        await page.evaluate("window.scrollTo(0,0)")
+        empty_home, icon_home, _, _ = await first_row_clears(page, "home")
+        # unselected button sits under the why line, ~44px, auto width
+        btn=await page.evaluate("""() => {
+          const item=document.querySelector('.item:not(.added)');
+          const why=item.querySelector('.why').getBoundingClientRect();
+          const txt=item.querySelector('.txt').getBoundingClientRect();
+          const btn=item.querySelector('.add').getBoundingClientRect();
+          const cs=getComputedStyle(item.querySelector('.why'));
+          return {below: btn.top>=why.bottom-1, h:+btn.height.toFixed(1), w:+btn.width.toFixed(1),
+                  leftDelta:+(btn.left-txt.left).toFixed(1), clamp:cs.webkitLineClamp||cs.lineClamp};
+        }""")
+        print("unselected btn:", btn)
+        assert btn["below"] and abs(btn["h"]-44)<=1 and btn["w"]<320
+        assert btn["leftDelta"]>=-1
+        await page.click("#tab-kids"); await page.wait_for_timeout(300)
+        empty_kids, icon_kids, _, _ = await first_row_clears(page, "kids")
+        kids_icons=await page.evaluate("""() => Array.from(document.querySelectorAll('.item .ic svg path')).map(p=>({d:(p.getAttribute('d')||'').length, h:p.ownerSVGElement.getBoundingClientRect().height}))""")
+        print("kids icon paths:", [(k["d"], round(k["h"],1)) for k in kids_icons])
+        assert len(kids_icons)==12 and all(k["d"]>10 and k["h"]>8 for k in kids_icons)
+        await page.click("#tab-home"); await page.wait_for_timeout(200)
+        assert empty_home and icon_home, "Home first row must clear the bar in the empty state"
+        assert empty_kids and icon_kids, "Baby & kids first row must clear the bar in the empty state"
+
         await add_six(page)
         prog=await page.text_content("#progText")
         filled=await page.locator(".slot.filled").count()
@@ -120,9 +176,7 @@ async def main():
         await page.evaluate("window.scrollTo(0,0)"); await page.wait_for_timeout(300)
         row_box=await page.locator(".item").first.bounding_box()
         bar_box=await page.locator(".buybar").bounding_box()
-        visible_h=min(row_box["y"]+row_box["height"], bar_box["y"]) - row_box["y"]
-        full_row=row_box["y"]>=0 and (row_box["y"]+row_box["height"]) <= bar_box["y"] + 0.5
-        print("first row y:", round(row_box["y"],1), "h:", round(row_box["height"],1), "bar y:", round(bar_box["y"],1), "visible_h:", round(max(0,visible_h),1), "full_row_above_bar:", full_row)
+        print("selected first row y:", round(row_box["y"],1), "h:", round(row_box["height"],1), "bar y:", round(bar_box["y"],1))
 
         issues390=await labels_for_all_tabs(page, "390")
         await page.click("#tab-home"); await page.wait_for_timeout(200)
@@ -139,6 +193,13 @@ async def main():
         await page.screenshot(path=f"{OUT}/mobile-full.png",full_page=True)
 
         await page.click("#tab-kids"); await page.wait_for_timeout(300)
+        baby=await page.evaluate("""() => {
+          const t=document.querySelector('#boxSvg .slot[data-id="babyfood"] .lbl');
+          const lines=[...t.querySelectorAll('tspan')].map(s=>s.textContent.trim());
+          return {full:t.getAttribute('data-full'), shown:lines.length?lines:[t.textContent.trim()]};
+        }""")
+        print("baby food label:", baby)
+        assert [x.lower() for x in baby["shown"]]==["baby","food"], baby
         kids_names=await page.eval_on_selector_all(".item .nm","els=>els.map(e=>e.textContent)")
         print("kids names:", kids_names)
         for need in ["Ready-to-feed formula","Nappies","Baby wipes","Bottles","Children's medication","Comfort toy","Activities"]:
@@ -190,6 +251,6 @@ async def main():
         print("console errors:", errs)
         assert not issues360 and not issues390 and not issues1280, "clipped or cut labels"
         assert not errs, errs
-        assert full_row, "first list row must clear the sticky bar at 390x844"
+        assert empty_home and empty_kids, "first list rows must clear the sticky bar at 390x844 in the empty state"
         await b.close()
 asyncio.run(main())

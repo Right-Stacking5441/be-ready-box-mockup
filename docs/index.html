@@ -33,7 +33,7 @@ a{color:var(--moss)}
 .mock-strip span{font-weight:400;color:var(--ink2)}
 
 /* Header */
-.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
 header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 0 4px}
 .wordmark{font-family:var(--serif);font-size:24px;line-height:1;margin:0;font-weight:400;display:flex;align-items:center;gap:10px}
 .wordmark svg{flex:none}
@@ -44,11 +44,15 @@ header.top{display:flex;align-items:center;justify-content:space-between;gap:12p
 .intro p{margin:0 0 8px;color:var(--ink2)}
 
 /* Tabs: underline matches the label width, with no padding on the underline */
-.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line);margin:8px -16px 0;padding:0 16px;-webkit-overflow-scrolling:touch}
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line);margin:8px -20px 0;padding:0 20px;-webkit-overflow-scrolling:touch}
 .tabs::-webkit-scrollbar{display:none}
 .tab{flex:none;min-height:48px;padding:0 14px;background:none;border:0;position:relative;margin-bottom:-1px;font:inherit;font-size:15px;color:var(--ink2);cursor:pointer;white-space:nowrap}
+.tab:first-child{padding-left:0}
+.tab:last-child{padding-right:0}
 .tab[aria-selected="true"]{color:var(--ink);font-weight:700}
 .tab[aria-selected="true"]::after{content:"";position:absolute;left:14px;right:14px;bottom:-1px;height:2px;background:var(--moss)}
+.tab:first-child[aria-selected="true"]::after{left:0}
+.tab:last-child[aria-selected="true"]::after{right:0}
 .tab:hover{color:var(--ink)}
 
 /* Layout */
@@ -104,7 +108,7 @@ header.top{display:flex;align-items:center;justify-content:space-between;gap:12p
 .item.added .ic svg{stroke:var(--moss)}
 .item .txt{flex:1;min-width:0}
 .item .nm{font-weight:700;font-size:16px;margin:0}
-.item .why{margin:2px 0 0;color:var(--ink2);font-size:15px}
+.item .why{margin:2px 0 0;color:var(--ink2);font-size:15px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
 .shop-note{margin:2px 0 0;font-size:13px;color:var(--muted)}
 .item.added .shop-note{display:none}
 .item .act{flex:none;display:flex;align-items:center;justify-content:flex-end}
@@ -175,8 +179,21 @@ dialog::backdrop{background:rgba(34,38,42,.45)}
 @media (max-width:479px){
   .intro p{display:none}
   .box-svg{max-height:200px}
+  .box-card{padding:12px}
   .tab{padding:0 10px}
+  .tab:first-child{padding-left:0}
+  .tab:last-child{padding-right:0}
   .tab[aria-selected="true"]::after{left:10px;right:10px}
+  .tab:first-child[aria-selected="true"]::after{left:0}
+  .tab:last-child[aria-selected="true"]::after{right:0}
+  .item{padding:10px 16px}
+  .reset{min-height:32px}
+  .list-head{padding:6px 16px 4px}
+  .item:not(.added){flex-wrap:wrap;align-items:flex-start;row-gap:6px}
+  .item:not(.added) .txt{flex:1 1 0;min-width:0}
+  .item:not(.added) .shop-note{display:none}
+  .item:not(.added) .act{flex:1 1 100%;justify-content:flex-start;padding-left:48px}
+  .item:not(.added) .add{width:auto;height:44px;min-height:44px}
 }
 
 @media (min-width:1024px){
@@ -333,81 +350,83 @@ var ICONS={
   gloves:"M7 21v-6L4.5 11a1.5 1.5 0 0 1 2.5-1.5L8 11V5a1.5 1.5 0 0 1 3 0v5V3.5a1.5 1.5 0 0 1 3 0V10V5a1.5 1.5 0 0 1 3 0v10l-2 6z",
   opener:"M3 11h10.5a4.2 4.2 0 1 1 0 2H3zM3 11l-1.2-3M3 13l-1.2 3",
   hygiene:"M10 2h4v2h-1v2h3v2H8V6h3V4h-1zM8 8h8l-1 13H9z",
-  formula:"M10 2h4v3h-4zM9 5h6l1 3H8zM8 8h8v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2zM8 13h8",
-  nappy:"M5 8h14v4c0 5-3 8-7 8s-7-3-7-8zM5 12h14M9 8V6M15 8V6",
-  wipes:"M6 8h12v12H6zM9 8V5.5h6V8M9 13h6M9 16h4",
-  feeding:"M3 14h12a6 5 0 0 1-12 0zM16 5l4 4-8 8",
-  toy:"M7.5 5.5a2.5 2.5 0 1 1 0 5a2.5 2.5 0 1 1 0-5M16.5 5.5a2.5 2.5 0 1 1 0 5a2.5 2.5 0 1 1 0-5M12 6.5a7 7 0 1 1 0 14a7 7 0 1 1 0-14M9.2 13h.01M14.8 13h.01M9.5 16.3c1.5 1.2 3.5 1.2 5 0",
-  activities:"M3 5h10v15H3zM8 5v15M5.5 8h3M5.5 11h3M16 6l5 12M15 18h7",
-  shirt:"M9 3l3 2.5L15 3l6 4-2.5 3H16v11H8V10H5.5L3 7z"
+  babybottle:"M10 2.5h4v2h-4zM9 4.5h6v2.5H9zM8 7h8v12a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2zM8 14h8",
+  jar:"M9 3.5h6v2.5H9zM7 6h10v14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2zM7 11h10",
+  nappy:"M4.5 8h15v3c0 5.5-3.2 9.5-7.5 9.5S4.5 16.5 4.5 11zM4.5 11.5h15M8.5 8V5.5M15.5 8V5.5",
+  wipes:"M6 8h12v13H6zM9 8V5h6v3M9 13h6M9 16.5h4",
+  spoon:"M17 5a3.6 3.6 0 1 1 0 7.2A3.6 3.6 0 1 1 17 5zM14.2 11.2L5.5 20.5",
+  teddy:"M6 6.3a2.3 2.3 0 1 1 0 4.6a2.3 2.3 0 1 1 0-4.6M18 6.3a2.3 2.3 0 1 1 0 4.6a2.3 2.3 0 1 1 0-4.6M12 7a6.5 6.5 0 1 1 0 13a6.5 6.5 0 1 1 0-13M9.5 13.2h.01M14.5 13.2h.01M9.6 16.2c1.5 1.3 3.3 1.3 4.8 0",
+  crayon:"M8 21V9l4-6 4 6v12zM8 9h8",
+  shirt:"M9 4l3 2.5L15 4l6 3.5-2.2 3H16V21H8V10.5H5.2L3 7.5z",
+  drybag:"M8 9h8l-1.2 12.5H9.2zM8 9l2-4.5h4L16 9M10.2 6.8h3.6"
 };
 function amz(q){return "https://www.amazon.co.uk/s?k="+encodeURIComponent(q).replace(/%20/g,"+");}
 var TABS=[
  {id:"home",tab:"Home 72-hour",title:"Home 72-hour box",items:[
-  ["water","Water","water","3 litres per person per day, for three days' drinking","bottled water 5 litre","bottle"],
-  ["food","Non-perishable food","food","Food with a long shelf life that doesn't need refrigeration or cooking, that you'd usually eat","long life food tins","can"],
-  ["opener","Tin opener","tin opener","For tinned food","tin opener","opener"],
-  ["hygiene","Hand sanitiser and wet wipes","hygiene","Hand sanitiser, wet wipes, hygiene and bathroom products","hand sanitiser wet wipes","hygiene"],
-  ["torch","Torch and spare batteries","torch","A torch and spare batteries","led torch spare batteries","torch"],
-  ["radio","FM radio (battery or wind-up)","radio","An FM radio, battery-powered or wind-up","fm battery wind up radio","radio"],
-  ["power","Charged power bank","power bank","A charged power bank","power bank","power"],
-  ["aid","First aid kit","first aid","A basic first aid kit","first aid kit home","aid"],
-  ["meds","Essential medication","medicine","Essential medication and medical supplies","pill organiser box","pill"],
-  ["cash","Cash and cards","cash","A mix of coins and notes, and cards","cash envelope wallet","cash"],
-  ["docs","Documents and contacts","papers","Copies of IDs and documents, and important phone numbers, kept dry","waterproof document pouch","docs"],
-  ["blanket","Blankets and warm clothing","blankets","Blankets, sleeping bags and warm clothing","blankets sleeping bags","blanket"]]},
+  ["water","Water","water","Three litres each a day, for three days.","bottled water 5 litre","bottle"],
+  ["food","Non-perishable food","food","Tins and packets you'd eat anyway, no cooking needed.","long life food tins","can"],
+  ["opener","Tin opener","tin opener","The tins are no use without one.","tin opener","opener"],
+  ["hygiene","Hand sanitiser and wet wipes","hygiene","For when the taps aren't running.","hand sanitiser wet wipes","hygiene"],
+  ["torch","Torch and spare batteries","torch","Safer than candles in a power cut.","led torch spare batteries","torch"],
+  ["radio","FM radio (battery or wind-up)","radio","Local updates without needing a signal.","fm battery wind up radio","radio"],
+  ["power","Charged power bank","power bank","So you can keep in communication.","power bank","power"],
+  ["aid","First aid kit","first aid","First aid items, kept in one place.","first aid kit home","aid"],
+  ["meds","Essential medication","medicine","Regular medication and medical supplies.","pill organiser box","pill"],
+  ["cash","Cash and cards","cash","If card payments stop working.","cash envelope wallet","cash"],
+  ["docs","Documents and contacts","papers","Copies of IDs and numbers, kept dry.","waterproof document pouch","docs"],
+  ["blanket","Blankets and warm clothing","blankets","Sleeping bags and warm spare clothing.","blankets sleeping bags","blanket"]]},
  {id:"kids",tab:"Baby & kids",title:"Baby & kids box",items:[
-  ["formula","Ready-to-feed formula","formula","Ready-to-feed formula is best, as you may not be able to boil water to make up powdered formula safely","ready to feed baby formula","formula"],
-  ["babyfood","Baby food","baby food","Formula milk or baby food","baby food pouches","can"],
-  ["nappies","Nappies","nappies","Nappies and wipes","nappies","nappy"],
-  ["wipes","Baby wipes","wipes","Nappies and wipes","baby wipes","wipes"],
-  ["bottles","Bottles","bottles","Bottles and feeding equipment","baby bottles","formula"],
-  ["feeding","Feeding equipment","feeding","Bottles and feeding equipment","baby feeding equipment","feeding"],
-  ["meds","Children's medication","medicine","Children's medication","children's medicine","pill"],
-  ["toy","Comfort toy","comfort toy","Comfort items such as a favourite toy or blanket","comfort toy soft toy","toy"],
-  ["blanket","Comfort blanket","blanket","Comfort items such as a favourite toy or blanket","baby comfort blanket","blanket"],
-  ["play","Activities","activity","Activities to help keep children occupied","children's activity set","activities"],
-  ["clothes","Warm spare clothing","clothing","Warm spare clothing","children's warm clothing","shirt"],
-  ["drybag","Waterproof bag","dry bag","Waterproof bags","waterproof bag","bags"]]},
+  ["formula","Ready-to-feed formula","formula","No water or sterilising needed.","ready to feed baby formula","babybottle"],
+  ["babyfood","Baby food","baby food","A few days of what they usually eat.","baby food pouches","jar"],
+  ["nappies","Nappies","nappies","A few days' worth, if you can't get out.","nappies","nappy"],
+  ["wipes","Baby wipes","wipes","For changes and a basic clean.","baby wipes","wipes"],
+  ["bottles","Bottles","bottles","So you can keep feeding as usual.","baby bottles","babybottle"],
+  ["feeding","Feeding equipment","feeding","The extras you use with the bottles.","baby feeding equipment","spoon"],
+  ["meds","Children's medication","medicine","Whatever medicine they usually take.","children's medicine","aid"],
+  ["toy","Comfort toy","comfort toy","A favourite toy, to help them settle.","comfort toy soft toy","teddy"],
+  ["blanket","Comfort blanket","blanket","A favourite blanket, to help them settle.","baby comfort blanket","blanket"],
+  ["play","Activities","activity","To help keep children occupied.","children's activity set","crayon"],
+  ["clothes","Warm spare clothing","clothing","A spare set of warm clothes.","children's warm clothing","shirt"],
+  ["drybag","Waterproof bag","dry bag","Keeps spare clothes and papers dry.","waterproof bag","drybag"]]},
  {id:"power",tab:"Power cut",title:"Power cut box",items:[
-  ["headtorch","Head torch","head torch","Hands free for cooking and stairs","head torch rechargeable","headtorch"],
-  ["lantern","LED lantern","lantern","Lights a whole room, not just a spot","led camping lantern","lantern"],
-  ["power","Power bank","power","Charge it now, use it when you need it","power bank 20000mah","power"],
-  ["batt","Spare batteries","battery","AA and AAA to fit what you own","aa aaa batteries pack","batt"],
-  ["radio","Wind-up radio","radio","Local news without mains or wifi","wind up radio","radio"],
-  ["flask","Vacuum flask","flask","Hot drinks stay hot for hours","vacuum flask 1 litre","flask"],
-  ["blanket","Warm blankets","blankets","An extra layer for the evening","fleece blanket","blanket"],
-  ["tealight","LED tea lights","lights","Soft light with no flame","led tea lights battery","tealight"],
-  ["coolbox","Cool box & ice packs","cool box","Keeps the fridge basics cold a bit longer","cool box ice packs","coolbox"],
-  ["food","No-cook snacks","snacks","Things you can eat without a hob","no cook snacks long life","can"],
-  ["water","Bottled water","water","In case the pumps pause too","bottled water 5 litre","bottle"],
-  ["list","Paper phone list","numbers","Numbers you'd want if your phone runs flat","address book small","list"]]},
+  ["headtorch","Head torch","head torch","Leaves your hands free in the dark.","head torch rechargeable","headtorch"],
+  ["lantern","LED lantern","lantern","Lights a whole room, not just a spot.","led camping lantern","lantern"],
+  ["power","Power bank","power","Charge it now, use it when you need it.","power bank 20000mah","power"],
+  ["batt","Spare batteries","battery","For the torch and radio you already have.","aa aaa batteries pack","batt"],
+  ["radio","Wind-up radio","radio","Local updates without needing a signal.","wind up radio","radio"],
+  ["flask","Vacuum flask","flask","Keeps a hot drink warm for hours.","vacuum flask 1 litre","flask"],
+  ["blanket","Warm blankets","blankets","Extra layers to keep everyone warm.","fleece blanket","blanket"],
+  ["tealight","LED tea lights","lights","Soft light, without a flame.","led tea lights battery","tealight"],
+  ["coolbox","Cool box & ice packs","cool box","Keeps fridge basics cold a bit longer.","cool box ice packs","coolbox"],
+  ["food","No-cook snacks","snacks","Food you can eat without cooking.","no cook snacks long life","can"],
+  ["water","Bottled water","water","If the water supply is disrupted.","bottled water 5 litre","bottle"],
+  ["list","Paper phone list","numbers","Contact numbers, if phones are out.","address book small","list"]]},
  {id:"car",tab:"Car",title:"Car box",items:[
-  ["scraper","Scraper & de-icer","scraper","Clear windows on frosty mornings","ice scraper de icer","scraper"],
-  ["leads","Jump leads","leads","A quick start if the battery is flat","jump leads","leads"],
-  ["vest","Hi-vis vest","hi-vis","Easy to be seen at the roadside","hi vis vest","vest"],
-  ["triangle","Warning triangle","triangle","Lets other drivers know early","warning triangle car","triangle"],
-  ["torch","Torch","torch","For checking tyres in the dark","led torch","torch"],
-  ["plug","Car phone charger","charger","Keeps your phone topped up on the move","car phone charger usb c","plug"],
-  ["blanket","Blanket","blanket","Comfortable if you're waiting a while","car blanket","blanket"],
-  ["water","Water","water","A couple of bottles in the boot","bottled water 500ml","bottle"],
-  ["snack","Snack bars","snacks","Long-life and easy to share","cereal bars multipack","snack"],
-  ["aid","First aid kit","first aid","A compact kit for the glovebox","car first aid kit","aid"],
-  ["map","Road atlas","MAP","Works with no signal at all","road atlas britain","map"],
-  ["gauge","Tyre inflator","inflator","Top up a soft tyre at the roadside","portable tyre inflator","gauge"]]},
+  ["scraper","Scraper & de-icer","scraper","Clear windows on frosty mornings.","ice scraper de icer","scraper"],
+  ["leads","Jump leads","leads","If the car battery is flat.","jump leads","leads"],
+  ["vest","Hi-vis vest","hi-vis","So you can be seen at the roadside.","hi vis vest","vest"],
+  ["triangle","Warning triangle","triangle","Lets other drivers know you're stopped.","warning triangle car","triangle"],
+  ["torch","Torch","torch","For when you need light at the roadside.","led torch","torch"],
+  ["plug","Car phone charger","charger","To keep your phone charged on the move.","car phone charger usb c","plug"],
+  ["blanket","Blanket","blanket","To keep warm if you're waiting.","car blanket","blanket"],
+  ["water","Water","water","A couple of bottles, kept in the boot.","bottled water 500ml","bottle"],
+  ["snack","Snack bars","snacks","Non-perishable snacks for the journey.","cereal bars multipack","snack"],
+  ["aid","First aid kit","first aid","A compact kit for the glovebox.","car first aid kit","aid"],
+  ["map","Road atlas","MAP","For diversions, or if there's no signal.","road atlas britain","map"],
+  ["gauge","Tyre inflator","inflator","To top up a soft tyre at the roadside.","portable tyre inflator","gauge"]]},
  {id:"pets",tab:"Pets",title:"Pets box",items:[
-  ["food","Pet food","food","Three days of their usual food","pet food pouches","can"],
-  ["bowl","Water & bowl","bowl","A folding bowl and a bottle","collapsible pet bowl","bowl"],
-  ["lead","Spare lead","lead","One by the door, one in the box","dog lead","lead"],
-  ["carrier","Pet carrier","carrier","A calm, familiar way to travel","pet carrier","carrier"],
-  ["aid","Pet first aid","first aid","Bandage, wipes and tick remover","pet first aid kit","aid"],
-  ["pill","Medicines","medicines","A few days of anything they take","pet pill box","pill"],
-  ["bags","Poo bags","poo bags","A roll you won't miss from the drawer","dog poo bags","bags"],
-  ["docs","Vet records","vet notes","Vaccination and microchip details","waterproof document pouch","docs"],
-  ["blanket","Pet blanket","blanket","Smells like home","pet blanket","blanket"],
-  ["ball","Favourite toy","toy","Something familiar to settle them","pet toy","ball"],
-  ["tag","ID tag","id tag","Your number on their collar","pet id tag","tag"],
-  ["tray","Travel litter tray","litter","Folds flat for cats on the move","travel litter tray","tray"]]}
+  ["food","Pet food","food","Three days of their usual food.","pet food pouches","can"],
+  ["bowl","Water & bowl","bowl","Drinking water, and a bowl to use.","collapsible pet bowl","bowl"],
+  ["lead","Spare lead","lead","A spare, kept ready with the kit.","dog lead","lead"],
+  ["carrier","Pet carrier","carrier","A familiar way to carry them.","pet carrier","carrier"],
+  ["aid","Pet first aid","first aid","A few basics, if they need them.","pet first aid kit","aid"],
+  ["pill","Medicines","medicines","A few days of anything they take.","pet pill box","pill"],
+  ["bags","Poo bags","poo bags","Waste bags, kept with the kit.","dog poo bags","bags"],
+  ["docs","Vet records","vet notes","Copies of their important records.","waterproof document pouch","docs"],
+  ["blanket","Pet blanket","blanket","Bedding that smells like home.","pet blanket","blanket"],
+  ["ball","Favourite toy","toy","Something familiar to settle them.","pet toy","ball"],
+  ["tag","ID tag","id tag","Your number on their collar.","pet id tag","tag"],
+  ["tray","Travel litter tray","litter","Litter supplies, if you have to leave.","travel litter tray","tray"]]}
 ];
 TABS.forEach(function(t){t.items=t.items.map(function(a){return {id:a[0],name:a[1],short:a[2],why:a[3],url:amz(a[4]),icon:a[5]};});});
 
@@ -550,9 +569,9 @@ function fitLabels(){
     var align=t.getAttribute("data-align")||"center";
     var ls=".02em", lines=null, low=original.toLowerCase();
     try{
-      if(low==="first aid"){
-        lines=["first","aid"];
-        if(measureLabel(svg,"first",fs,ls)>max||measureLabel(svg,"aid",fs,ls)>max)ls="0";
+      if(low==="first aid"||low==="baby food"){
+        lines=low.split(" ");
+        if(measureLabel(svg,lines[0],fs,ls)>max||measureLabel(svg,lines[1],fs,ls)>max)ls="0";
       }else if(measureLabel(svg,original,fs,ls)<=max){
         lines=[original];
       }else if(/\s/.test(original)&&(lines=splitTwoLines(original,max,fs,ls,svg))){
@@ -605,9 +624,13 @@ function selectedCount(tab){
 function switchTab(id){
   current=id;try{localStorage.setItem(KEY+"tab",id);}catch(e){}
   Array.prototype.forEach.call(document.querySelectorAll(".tab"),function(b){var on=b.dataset.id===id;b.setAttribute("aria-selected",on?"true":"false");b.tabIndex=on?0:-1;});
-  var a=$("tab-"+id);if(a&&a.scrollIntoView)a.scrollIntoView({block:"nearest",inline:"nearest"});
+  scrollTabIntoView(id);
   hideResetConfirm();
   render();
+}
+function scrollTabIntoView(id){
+  var a=$("tab-"+id);
+  if(a&&a.scrollIntoView)a.scrollIntoView({block:"nearest",inline:"nearest"});
 }
 function render(){
   var t=tabById(current), added=load(current);
@@ -703,7 +726,7 @@ function buildPrint(){
 window.addEventListener("beforeprint",buildPrint);
 $("printBtn").addEventListener("click",function(){buildPrint();window.print();});
 window.addEventListener("resize",fitLabels);
-renderTabs();render();buildPrint();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitLabels);
+renderTabs();scrollTabIntoView(current);render();buildPrint();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitLabels);
 })();
 </script>
 </body>
