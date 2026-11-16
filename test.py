@@ -45,7 +45,7 @@ async def add_six(page):
 
 async def labels_for_all_tabs(page, tag):
     issues=[]
-    for tab in ["home","power","car","pets"]:
+    for tab in ["home","kids","power","car","pets"]:
         await page.click(f"#tab-{tab}")
         await page.wait_for_timeout(250)
         rows=await page.evaluate(LABEL_JS)
@@ -81,6 +81,26 @@ async def main():
         page.on("pageerror",lambda e: errs.append(str(e)))
         await setup(page)
         assert await page.locator(".item .add").first.text_content()=="Find at retailer"
+        tabs=await page.eval_on_selector_all(".tab","els=>els.map(e=>({id:e.id,text:e.textContent.trim()}))")
+        print("tabs:", tabs)
+        assert [t["id"] for t in tabs]==["tab-home","tab-kids","tab-power","tab-car","tab-pets"]
+        assert [t["text"] for t in tabs]==["Home 72-hour","Baby & kids","Power cut","Car","Pets"]
+        home_names=await page.eval_on_selector_all(".item .nm","els=>els.map(e=>e.textContent)")
+        print("home names:", home_names)
+        assert "Candles & matches" not in home_names and "Whistle" not in home_names
+        assert "Tin opener" in home_names and "Essential medication" in home_names
+        assert "Hand sanitiser and wet wipes" in home_names
+        assert "Charged power bank" in home_names
+        water_why=await page.locator(".item").first.locator(".why").text_content()
+        print("water why:", water_why)
+        assert "3 litres" in water_why
+        sources=await page.locator("footer .sources").text_content()
+        print("sources:", sources)
+        assert "Based on" in sources and "Not affiliated" in sources
+        assert "GOV.UK Be Ready" in sources and "British Red Cross" in sources
+        extra=await page.locator("#extraNote").text_content()
+        print("optional:", extra)
+        assert "whistle" in extra.lower() and "optional" in extra.lower()
         # progress note is below the segment bar
         order=await page.evaluate("""() => {
           const p=document.querySelector('.progress');
@@ -117,6 +137,19 @@ async def main():
         await page.evaluate("window.scrollTo(0,0)"); await page.wait_for_timeout(200)
         await page.screenshot(path=f"{OUT}/mobile.png")
         await page.screenshot(path=f"{OUT}/mobile-full.png",full_page=True)
+
+        await page.click("#tab-kids"); await page.wait_for_timeout(300)
+        kids_names=await page.eval_on_selector_all(".item .nm","els=>els.map(e=>e.textContent)")
+        print("kids names:", kids_names)
+        for need in ["Ready-to-feed formula","Nappies","Baby wipes","Bottles","Children's medication","Comfort toy","Activities"]:
+            assert need in kids_names, need
+        assert await page.locator("#extraNote").is_hidden()
+        kids_hrefs=await page.eval_on_selector_all(".add","els=>els.map(e=>e.href)")
+        assert all(h.startswith("https://www.amazon.co.uk/s?k=") for h in kids_hrefs)
+        assert not any(re.search(r"([?&](tag|ref|ascsubtag|linkCode|camp|creative|psc)=)", h, re.I) for h in kids_hrefs)
+        await page.evaluate("window.scrollTo(0,0)"); await page.wait_for_timeout(200)
+        await page.screenshot(path=f"{OUT}/mobile-babykids.png")
+        await page.click("#tab-home"); await page.wait_for_timeout(200)
 
         # modal + confirm still work
         await page.click("#buyBar"); await page.wait_for_timeout(200)
@@ -155,5 +188,8 @@ async def main():
         if issues360 or issues390 or issues1280:
             print("ISSUES DETAIL:", issues360+issues390+issues1280)
         print("console errors:", errs)
+        assert not issues360 and not issues390 and not issues1280, "clipped or cut labels"
+        assert not errs, errs
+        assert full_row, "first list row must clear the sticky bar at 390x844"
         await b.close()
 asyncio.run(main())

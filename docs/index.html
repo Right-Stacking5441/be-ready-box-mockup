@@ -130,6 +130,10 @@ header.top{display:flex;align-items:center;justify-content:space-between;gap:12p
 
 footer{margin:28px 0 0;padding:20px 0 24px;border-top:1px solid var(--line);font-size:14px;color:var(--ink2)}
 footer p{margin:0 0 6px}
+.sources{margin:12px 0 0;font-size:13px;color:var(--muted);line-height:1.4}
+.optional-note{margin:0;padding:12px 16px 16px;font-size:13px;color:var(--muted);line-height:1.4;border-top:1px solid var(--line)}
+.optional-note[hidden]{display:none}
+.optional-note a{font-weight:700;color:var(--moss)}
 
 /* Sticky buy bar */
 .buybar{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:10px 16px calc(10px + env(safe-area-inset-bottom, 0px));background:var(--page);border-top:1px solid #DDD5C6}
@@ -171,6 +175,8 @@ dialog::backdrop{background:rgba(34,38,42,.45)}
 @media (max-width:479px){
   .intro p{display:none}
   .box-svg{max-height:200px}
+  .tab{padding:0 10px}
+  .tab[aria-selected="true"]::after{left:10px;right:10px}
 }
 
 @media (min-width:1024px){
@@ -254,6 +260,7 @@ dialog::backdrop{background:rgba(34,38,42,.45)}
           <small>Links are plain shop searches</small>
         </div>
         <ul class="items" id="items"></ul>
+        <p class="optional-note" id="extraNote" hidden></p>
       </div>
 
       <section class="gtk" aria-labelledby="gtkTitle">
@@ -270,6 +277,7 @@ dialog::backdrop{background:rgba(34,38,42,.45)}
   <footer>
     <p><strong>Be Ready Box</strong> is a mockup by Hurrell Capital. It is not a live service.</p>
     <p>“Find at retailer” buttons open plain Amazon UK search results in a new tab. They are mockup links with no affiliate tags, and nothing is bought here. Selecting items builds a checklist saved only in this browser.</p>
+    <p class="sources">Based on <a href="https://www.gov.uk/beready" target="_blank" rel="noopener noreferrer">GOV.UK Be Ready</a> advice and <a href="https://www.redcross.org.uk/get-help/prepare-for-emergencies/prepare-an-emergency-kit" target="_blank" rel="noopener noreferrer">British Red Cross</a> guidance. Not affiliated with or endorsed by GOV.UK or the British Red Cross.</p>
   </footer>
 </div>
 
@@ -322,23 +330,45 @@ var ICONS={
   ball:"M12 3a9 9 0 1 1 0 18a9 9 0 1 1 0-18M4 8.5c5 2 11 2 16 0M4 15.5c5-2 11-2 16 0",
   tray:"M3 10h18l-2 9H5zM6 10l1-3h10l1 3",
   coolbox:"M3 8h18v12H3zM3 12.5h18M9 5h6v3H9z",
-  gloves:"M7 21v-6L4.5 11a1.5 1.5 0 0 1 2.5-1.5L8 11V5a1.5 1.5 0 0 1 3 0v5V3.5a1.5 1.5 0 0 1 3 0V10V5a1.5 1.5 0 0 1 3 0v10l-2 6z"
+  gloves:"M7 21v-6L4.5 11a1.5 1.5 0 0 1 2.5-1.5L8 11V5a1.5 1.5 0 0 1 3 0v5V3.5a1.5 1.5 0 0 1 3 0V10V5a1.5 1.5 0 0 1 3 0v10l-2 6z",
+  opener:"M3 11h10.5a4.2 4.2 0 1 1 0 2H3zM3 11l-1.2-3M3 13l-1.2 3",
+  hygiene:"M10 2h4v2h-1v2h3v2H8V6h3V4h-1zM8 8h8l-1 13H9z",
+  formula:"M10 2h4v3h-4zM9 5h6l1 3H8zM8 8h8v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2zM8 13h8",
+  nappy:"M5 8h14v4c0 5-3 8-7 8s-7-3-7-8zM5 12h14M9 8V6M15 8V6",
+  wipes:"M6 8h12v12H6zM9 8V5.5h6V8M9 13h6M9 16h4",
+  feeding:"M3 14h12a6 5 0 0 1-12 0zM16 5l4 4-8 8",
+  toy:"M7.5 5.5a2.5 2.5 0 1 1 0 5a2.5 2.5 0 1 1 0-5M16.5 5.5a2.5 2.5 0 1 1 0 5a2.5 2.5 0 1 1 0-5M12 6.5a7 7 0 1 1 0 14a7 7 0 1 1 0-14M9.2 13h.01M14.8 13h.01M9.5 16.3c1.5 1.2 3.5 1.2 5 0",
+  activities:"M3 5h10v15H3zM8 5v15M5.5 8h3M5.5 11h3M16 6l5 12M15 18h7",
+  shirt:"M9 3l3 2.5L15 3l6 4-2.5 3H16v11H8V10H5.5L3 7z"
 };
 function amz(q){return "https://www.amazon.co.uk/s?k="+encodeURIComponent(q).replace(/%20/g,"+");}
 var TABS=[
  {id:"home",tab:"Home 72-hour",title:"Home 72-hour box",items:[
-  ["water","Water","water","Two litres a person a day, for three days","bottled water 5 litre","bottle"],
-  ["food","Long-life food","food","Tins and packets you already like to eat","long life food tins","can"],
-  ["torch","Torch","torch","Lights the stairs if the power goes","led torch","torch"],
-  ["radio","Wind-up radio","radio","Keeps you up to date without a charger","wind up radio","radio"],
-  ["power","Power bank","power","Keeps your phone going for a day or two","power bank 20000mah","power"],
-  ["aid","First aid kit","first aid","Plasters and basics in one place","first aid kit home","aid"],
-  ["batt","Batteries","battery","Spares for the torch and radio","aa batteries pack","batt"],
-  ["candle","Candles & matches","candle","A gentle backup light, used with care","emergency candles and matches","candle"],
-  ["cash","Cash","cash","Small notes, in case card machines are down","cash envelope wallet","cash"],
-  ["docs","Documents pouch","papers","Copies of the important papers, kept dry","waterproof document pouch","docs"],
-  ["whistle","Whistle","whistle","Easy to hear, light to carry","safety whistle","whistle"],
-  ["foil","Foil blankets","blankets","Fold small, keep warmth in","foil blankets pack","blanket"]]},
+  ["water","Water","water","3 litres per person per day, for three days' drinking","bottled water 5 litre","bottle"],
+  ["food","Non-perishable food","food","Food with a long shelf life that doesn't need refrigeration or cooking, that you'd usually eat","long life food tins","can"],
+  ["opener","Tin opener","tin opener","For tinned food","tin opener","opener"],
+  ["hygiene","Hand sanitiser and wet wipes","hygiene","Hand sanitiser, wet wipes, hygiene and bathroom products","hand sanitiser wet wipes","hygiene"],
+  ["torch","Torch and spare batteries","torch","A torch and spare batteries","led torch spare batteries","torch"],
+  ["radio","FM radio (battery or wind-up)","radio","An FM radio, battery-powered or wind-up","fm battery wind up radio","radio"],
+  ["power","Charged power bank","power bank","A charged power bank","power bank","power"],
+  ["aid","First aid kit","first aid","A basic first aid kit","first aid kit home","aid"],
+  ["meds","Essential medication","medicine","Essential medication and medical supplies","pill organiser box","pill"],
+  ["cash","Cash and cards","cash","A mix of coins and notes, and cards","cash envelope wallet","cash"],
+  ["docs","Documents and contacts","papers","Copies of IDs and documents, and important phone numbers, kept dry","waterproof document pouch","docs"],
+  ["blanket","Blankets and warm clothing","blankets","Blankets, sleeping bags and warm clothing","blankets sleeping bags","blanket"]]},
+ {id:"kids",tab:"Baby & kids",title:"Baby & kids box",items:[
+  ["formula","Ready-to-feed formula","formula","Ready-to-feed formula is best, as you may not be able to boil water to make up powdered formula safely","ready to feed baby formula","formula"],
+  ["babyfood","Baby food","baby food","Formula milk or baby food","baby food pouches","can"],
+  ["nappies","Nappies","nappies","Nappies and wipes","nappies","nappy"],
+  ["wipes","Baby wipes","wipes","Nappies and wipes","baby wipes","wipes"],
+  ["bottles","Bottles","bottles","Bottles and feeding equipment","baby bottles","formula"],
+  ["feeding","Feeding equipment","feeding","Bottles and feeding equipment","baby feeding equipment","feeding"],
+  ["meds","Children's medication","medicine","Children's medication","children's medicine","pill"],
+  ["toy","Comfort toy","comfort toy","Comfort items such as a favourite toy or blanket","comfort toy soft toy","toy"],
+  ["blanket","Comfort blanket","blanket","Comfort items such as a favourite toy or blanket","baby comfort blanket","blanket"],
+  ["play","Activities","activity","Activities to help keep children occupied","children's activity set","activities"],
+  ["clothes","Warm spare clothing","clothing","Warm spare clothing","children's warm clothing","shirt"],
+  ["drybag","Waterproof bag","dry bag","Waterproof bags","waterproof bag","bags"]]},
  {id:"power",tab:"Power cut",title:"Power cut box",items:[
   ["headtorch","Head torch","head torch","Hands free for cooking and stairs","head torch rechargeable","headtorch"],
   ["lantern","LED lantern","lantern","Lights a whole room, not just a spot","led camping lantern","lantern"],
@@ -598,6 +628,14 @@ function render(){
     li.querySelector(".change").addEventListener("click",function(){setItem(it.id,false);});
     ul.appendChild(li);
   });
+  var extra=$("extraNote");
+  if(t.id==="home"){
+    extra.hidden=false;
+    extra.innerHTML='Optional extra from the British Red Cross (not a core GOV.UK item): a <a href="'+esc(amz("safety whistle"))+'" target="_blank" rel="noopener noreferrer">whistle</a>.';
+  }else{
+    extra.hidden=true;
+    extra.innerHTML="";
+  }
   updateProgress();fitLabels();
 }
 function setItem(id,on){
@@ -649,11 +687,15 @@ $("resetNo").addEventListener("click",function(){
 });
 function buildPrint(){
   var h='<h1>Be Ready Box checklist</h1><p class="sub">Tick items on your checklist. Printed '+new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})+'. Mockup.</p>';
+  h+='<p class="sub">Based on GOV.UK Be Ready advice and British Red Cross guidance. Not affiliated with or endorsed by GOV.UK or the British Red Cross.</p>';
   var order=[tabById(current)].concat(TABS.filter(function(t){return t.id!==current;}));
   order.forEach(function(t){
     var added=load(t.id);
     h+='<section><h2>'+esc(t.title)+'</h2><ul>';
     t.items.forEach(function(it){h+='<li><span class="cb">'+(added.indexOf(it.id)>-1?'✓':'')+'</span><span><strong>'+esc(it.name)+'</strong> – '+esc(it.why)+'</span></li>';});
+    if(t.id==="home"){
+      h+='<li><span class="cb"></span><span><strong>Whistle</strong> – Optional extra from the British Red Cross, not a core GOV.UK item.</span></li>';
+    }
     h+='</ul></section>';
   });
   $("print-sheet").innerHTML=h;
